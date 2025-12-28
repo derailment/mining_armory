@@ -12,7 +12,7 @@ This project includes 3 methods to achieve persistence for XMRig:
 ./entry2
 ```
 
-##Implementing a rootkit to hide the XMRig process.
+## Implementing a rootkit to hide the XMRig process.
 ```
 ./entry3
 ```
